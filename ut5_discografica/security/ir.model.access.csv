@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+ut5_discografica_acl,ut5_discografica_disco_default,model_discografica_disco,discografica_users,1,0,0,0
+ut5_discografica_admin_acl,ut5_discografica_disco_admin_default,model_discografica_disco,discografica_admin,1,1,1,1
