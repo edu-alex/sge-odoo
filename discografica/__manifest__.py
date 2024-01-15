@@ -6,7 +6,7 @@
     Módulo para la gestión de una tienda de disco.
     Permite gestionar discos, artistas y géneros musicales.Educación.
     """,
-    'author': "SGE2023",
+    'author': "SGE2024",
     'website': "http://ead.murciaeduca.es",
 
     # Categories can be used to filter modules in modules listing
