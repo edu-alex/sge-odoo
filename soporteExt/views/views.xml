@@ -1,0 +1,188 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <!-- Elementos de menú - Acciones de ventana - Vistas -->
+
+
+    <record model="ir.ui.view" id="tecnico_list_inherited">
+      <field name="name">Lista de técnicos</field>
+      <field name="model">soporte.tecnico</field>
+      <field name="inherit_id" ref="soporte.tecnico_list" />
+      <field name="arch" type="xml">
+        <!-- 
+          position: 
+          inside
+          after
+          before
+          replace
+          attributes
+        -->
+
+        <field name="nombre" position="after">
+          <field name="apellido1" />
+          <field name="apellido2" />
+
+          <field name="tipo" />
+        </field>
+      </field>
+    </record>
+
+
+    <record model="ir.ui.view" id="tecnico_form">
+      <field name="name">Formulario de técnicos</field>
+      <field name="model">soporte.tecnico</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet string="Modelo para almacenar las personas que reparan incidencias">
+            <div class="oe_title">
+              <h1>Técnico_<field name="id"/></h1>
+            </div>
+            <div class="row">
+              <div class="oe_title mt-8">
+                <h1>
+                  <!-- <label for="dni" class="oe_edit_only"/> -->
+                  <field name="dni" placeholder="12345678Z" class="oe_inline"/>
+                </h1>
+              </div>
+              <div class="mt-4">
+                <field name="foto" widget="image" class="oe_right" options="{'size':[0,200]}"/>
+              </div>
+            </div>
+            
+            <separator string="Datos personales" colspan="4"/>
+            <group col="3">
+              <group >
+                <field name="apellido1" />
+                <field name="fecha_incorporacion"/>
+              </group>
+              <group>
+                <field name="apellido2"/>
+                <field name="fecha_nacimiento"/>                
+              </group>
+              <group>
+                <field name="nombre"/>
+                <field name="tipo"/>               
+              </group>              
+            </group>
+            <separator string="Incidencias realizadas" colspan="4"/>
+
+              <field name="incidencia_ids" can_create="true" can_write="true">
+                <tree decoration-success="cerrada == True" decoration-danger="prioridad &gt; 7"><!--editable="top">  -->
+                  <field name="titulo" on_change="1" modifiers="{&quot;required&quot;: true}" />
+                  <field name="descripcion" on_change="1"
+                    modifiers="{&quot;required&quot;: true, &quot;column_invisible&quot;: true}" />
+                  <field name="prioridad" on_change="1"
+                    modifiers="{&quot;column_invisible&quot;: true}" />
+                  <field name="urgente" modifiers="{&quot;readonly&quot;: true}" />
+                  <field name="ubicacion_id" on_change="1" />
+                  <field name="cerrada" on_change="1" />
+                  <field name="fecha_creacion" modifiers="{&quot;readonly&quot;: true}" />
+                  <field name="fecha_modificacion" modifiers="{&quot;readonly&quot;: true}" />
+                </tree>
+              </field>
+          </sheet>
+          <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers"/>
+            <field name="message_ids" widget="mail_thread"/>
+          </div>
+        </form>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="tecnico_kanban">
+      <field name="name">Vista kanban de técnicos</field>
+      <field name="model">soporte.tecnico</field>
+      <field name="arch" type="xml">
+        <kanban default_group_by="tipo">
+          <field name="nombre" />
+          <field name="id" />
+          <field name="tipo" />
+          <field name="incidencia_ids" sum="Total Incidencias" />
+
+          <templates>
+            <t t-name="kanban-box">
+              <div class="oe_kanban_global_click card">
+                <div class="card-header d-flex justify-content-between aling-items-center">
+                  <strong class="text-primary">
+                    <field name="nombre"/>
+                  </strong>
+                </div>
+                <div class="card-body">
+                <div class="mt-2">
+                  <div class="row">
+                  <div class="col-8">
+                    <div class="mt-2">  
+                      <i class="fa fa-address-card me-2"></i>
+                      <strong>Técnico: </strong>
+                      <field name="id"/>  
+                    </div>
+                    <div class="mt-2">
+                      <i class="fa fa-rocket me-2"></i>
+                      <strong>Tipo: </strong> 
+                      <field name="tipo"/> 
+                    </div>
+                    <div class="mt-2">
+                      <strong>Total: </strong>
+                      <field name="incidencia_ids" sum="Total Incidencias" />
+                    </div> 
+                  </div>
+                  <div class="col-4">
+                    <img t-att-src="kanban_image('soporte.tecnico', 'foto', record.id.raw_value)" t-att-alt="record.nombre" class="oe_right" style="width:100px;height:100px;"/>
+                  </div>
+                  </div>
+                </div>
+                </div>
+                <div class="card-footer">
+                  <div class="mt-2">
+                  <strong class="text-info">Incidencias: </strong> 
+                  <field name="incidencia_ids" widget="statinfo"  options="'sum':'id'"/>
+                  </div>
+                </div>
+              </div>
+            </t>
+          </templates>
+        </kanban>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="incidencia_calendar">
+      <field name="name">Vista calendario de incidencias</field>
+      <field name="model">soporte.incidencia</field>
+      <field name="arch" type="xml">
+        <!-- https://www.odoo.com/documentation/16.0/developer/reference/backend/views.html#calendar -->
+        <calendar string="Incidencias" date_start="fecha_creacion" color="cerrada" mode="month" event_limit="2">
+          <!--
+            date_stop="date_stop"
+            color="field" - Diferente color según el valor del campo
+            mode="month/week/day"
+            quick_add="True/False"
+            event_limit="2"
+          -->
+          <field name="titulo"/>
+          <field name="urgente"/>
+          <field name="cerrada"/>
+          <field name="id" filters="1"/>
+          <field name="tecnico_ids"/>
+
+        </calendar>
+      </field>
+    </record>
+    <record model="ir.actions.act_window" id="incidencia_action_window_ext">
+      <field name="name">Lista de incidencias</field>
+      <field name="res_model">soporte.incidencia</field>
+      <field name="view_mode">calendar,tree,form</field>
+    </record>
+    <menuitem name="Mostrar lista" id="soporte.soporte_incidencias_list" parent="soporte.soporte_incidencias"
+    action="incidencia_action_window_ext" groups="soporte_users"/>
+
+    <record model="ir.actions.act_window" id="tecnico_action_window_ext">
+      <field name="name">Lista de técnicos</field>
+      <field name="res_model">soporte.tecnico</field>
+      <field name="view_mode">tree,kanban,form</field>
+    </record>
+    <menuitem name="Mostrar lista" id="soporte.soporte_tecnicos_list" parent="soporte.soporte_tecnicos"
+    action="tecnico_action_window_ext" groups="soporte_admins"/>
+
+  </data>
+</odoo>

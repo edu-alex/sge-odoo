@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record model="ir.module.category" id="soporte_categoria_incidencia">
+        <field name="name">Soporte</field>
+        <field name="description">Gestión de usuarios para el módulo de soporte</field>
+        <field name="sequence">100</field>
+    </record>
+
+    <record model="res.groups" id="soporte_users">
+        <field name="name">Usuarios para consulta</field>
+        <field name="category_id" ref="soporte_categoria_incidencia"/>
+        <field name="comment">Usuarios básicos para soporte</field>
+        <field name="users" eval="[(4,ref('base.group_user'))]" />
+
+    </record>
+    <record model="res.groups" id="soporte_admins">
+        <field name="name">Usuarios administradores</field>
+        <field name="category_id" ref="soporte_categoria_incidencia"/>
+        <field name="comment">Usuarios administradores para soporte</field>
+        <field name="users" eval="[(4,ref('base.user_admin'))]" />  
+        <field name="implied_ids" eval="[(4,ref('soporte_users'))]"  /> 
+  
+    </record >
+
+</odoo>

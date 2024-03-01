@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+soporte_tecnico_acl_users,soporte_tecnico_users,model_soporte_tecnico,soporte_users,1,0,0,0
+soporte_tecnico_acl,soporte_tecnico,model_soporte_tecnico,soporte_admins,1,1,1,1

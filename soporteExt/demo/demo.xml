@@ -1,0 +1,63 @@
+<odoo>
+  <data>
+<!-- Datos para el modelo soporte.tecnico -->
+    <record id="tecnico0" model="soporte.tecnico">
+      <field name="nombre">Técnico 0</field>
+    </record>
+    <record id="tecnico1" model="soporte.tecnico">
+      <field name="nombre">Técnico 1</field>
+    </record>
+    <record id="tecnico2" model="soporte.tecnico">
+      <field name="nombre">Técnico 2</field>
+    </record>
+
+<!-- Datos para el modelo soporte.ubicacion -->
+    <record id="ubicacion0"  model="soporte.ubicacion">
+      <field name="nombre">Aula P1</field>
+      <!-- selection=[('1', 'Pabellón París'), ('2', 'Pabellón Roma')] -->
+      <field name="pabellon">1</field>
+      <!-- selection=[('0', 'Planta baja'),('1', 'Planta primera'), ('2', 'Planta segunda')] -->
+      <field name="planta">1</field>
+    </record>
+    <record id="ubicacion1" model="soporte.ubicacion">
+      <field name="nombre">Aula P2</field>
+      <field name="pabellon">1</field>
+      <field name="planta">2</field>
+    </record>
+
+    <record id="ubicacion2" model="soporte.ubicacion">
+      <field name="nombre">Aula R1</field>
+      <field name="pabellon">2</field>
+      <field name="planta">1</field>
+    </record>
+    <record id="ubicacion3" model="soporte.ubicacion">
+      <field name="nombre">Salón de actos</field>
+      <field name="pabellon">2</field>
+      <field name="planta">0</field>
+    </record>
+
+<!-- Datos para el modelo soporte.incidencia -->
+    <record id="incidencia0" model="soporte.incidencia">
+      <field name="titulo">Incidencia 0</field>
+      <field name="descripcion">El ordenador del aula no funciona.</field>
+      <field name="prioridad">0</field>
+      <!-- CAMPO CALCULADO <field name="urgente">0</field> -->
+      <field name="ubicacion_id" ref="ubicacion2" />
+      <field name="cerrada">0</field>
+      <field name="foto" file="soporte/static/imgs/foto1.png" type="base64"/>
+      <field name="fecha_creacion" eval="(datetime.now()).strftime('%Y-%m-%d')"/>
+      <field name="fecha_modificacion" eval="(datetime.now()).strftime('%Y-%m-%d')" />
+    </record> 
+    <record id="incidencia1" model="soporte.incidencia">
+      <field name="titulo">Incidencia 1</field>
+      <field name="descripcion">El ratón no funciona.</field>
+      <field name="prioridad">2</field>
+      <field name="ubicacion_id" ref="ubicacion3" />
+      <field name="cerrada">1</field>
+      <field name="foto" file="soporte/static/imgs/foto2.png" type="base64"/>
+      <field name="fecha_creacion" eval="(datetime.now()).strftime('%Y-%m-%d')"/>
+      <field name="fecha_modificacion" eval="(datetime.now()).strftime('%Y-%m-%d')" />
+      <field name="tecnico_ids" eval="[(6,0,[ref('tecnico1'),ref('tecnico2')])]" ></field> 
+    </record> 
+   </data>
+</odoo>
