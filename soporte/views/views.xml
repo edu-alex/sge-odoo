@@ -1,0 +1,176 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <!-- Elementos de menú - Acciones de ventana - Vistas -->
+
+    <record model="ir.ui.view" id="incidencia_list">
+      <field name="name">Lista de incidencias</field>
+      <field name="model">soporte.incidencia</field>
+      <field name="arch" type="xml">
+<!-- El elemento tree admite atributos decoration-XXX y editable. Este último admite valores top o bottom -->
+        <tree decoration-success="cerrada == True" decoration-danger="prioridad &gt; 7" ><!--editable="top">  -->
+          <field name="titulo"/>
+          <field name="descripcion" invisible="1"/>
+          <field name="prioridad" invisible="1" />
+          <field name="urgente"/>
+          <field name="ubicacion_id"/>
+          <field name="cerrada" />
+          <field name="fecha_creacion"/>
+          <field name="fecha_modificacion"/>
+        </tree>
+      </field>
+    </record>
+<!-- 
+ **** Widgets ***
+ integer
+ char
+ id
+ float
+ percentpie
+ progressbar
+ monetary
+ field_float_rating
+ priority
+
+ many2onebutton
+ many2manytags
+ *** Widgtes ***
+-->
+    <record model="ir.ui.view" id="incidencia_form">
+      <field name="name">Nueva incidencia</field>
+      <field name="model">soporte.incidencia</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+            <button name='informe_incidencia_boton' type='object' string='Imprimir incidencia'/>
+            <!-- <button name='nombre_funcion_a_definir_modelo' type='object' string='Palabra'/> -->
+          </header>
+          <sheet string="Modelo para la gestión de incidencias">
+          <h1>
+            <field name="titulo" placeholder="Introduce el título de la incidencia" nolabel="1" />
+          </h1>
+
+          <h2>
+            <field name="descripcion"  placeholder="Introduce el detalle de la incidencia" />
+          </h2>
+            
+          
+          <notebook>
+            <page string="Információn básica">
+              <group>
+                <field name="prioridad" attrs="{'invisible':[('cerrada','=',True)]}"  />
+                <field name="ubicacion_id"  can_create="true" can_write="true" 
+                
+                />
+              </group>
+              
+            </page>
+            <page string="Adjuntos">
+              <group>
+                <separator string="Capturas de la incidencia"/>
+                <field name="archivo" />
+                <field name="foto" widget="image" class="oe_left" options="{'size':[0,400]}"/>
+              </group>              
+            </page>
+            <page string="Datos técnicos">
+              <group>
+                <field name="fecha_creacion" class="oe_edit_only"/>
+                <field name="fecha_modificacion"/>
+                <separator string="Técnicos trabajando en la incidencia"/>
+                <field name="tecnico_ids" can_create="false" can_write="false" 
+                widget="many2many_tags">
+                
+
+
+                </field>
+              
+              </group>
+            </page>
+            <page string="Más información">
+              <group>
+                <field name="urgente" />
+                <field name="cerrada" widget="boolean_toggle"/>
+              </group>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+      </field>
+    </record>
+<!-- 
+**** Decoración para la vista tree
+decoration-muted: líneas en light grey
+decoration-danger: líneas en light red
+decoration-success: líneas en light green
+decoration-primary: líneas en light purple  
+decoration-info: líneas en light blue 
+decoration-warning: líneas en light brown
+decoration-bf: líneas en bold
+decoration-it: líneas en italic
+
+**** Destacar: decoration-warning="qty &lt; 5 " usando &lt; para "menor", &gt; para "mayor", etc...
+-->
+
+    <record model="ir.ui.view" id="ubicacion_list">
+      <field name="name">Lista de ubicaciones</field>
+      <field name="model">soporte.ubicacion</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="nombre"/>
+          <field name="pabellon"/>
+          <field name="planta"/>
+        </tree>
+      </field>
+    </record>
+    <record model="ir.ui.view" id="tecnico_list">
+      <field name="name">Lista de técnicos</field>
+      <field name="model">soporte.tecnico</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="nombre"/>
+
+        </tree>
+      </field>
+    </record>
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="incidencia_action_window">
+      <field name="name">Lista de incidencias</field>
+      <field name="res_model">soporte.incidencia</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="ubicacion_action_window">
+      <field name="name">Lista de ubicaciones</field>
+      <field name="res_model">soporte.ubicacion</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="tecnico_action_window">
+      <field name="name">Lista de tecnicos</field>
+      <field name="res_model">soporte.tecnico</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    <!-- Top menu item -->
+
+    <menuitem name="SoporteSGE" id="soporte.menu_root" groups="soporte_users"/>
+
+    <!-- menu categories -->
+
+    <menuitem name="Incidencias" id="soporte_incidencias" parent="soporte.menu_root" groups="soporte_users"/>
+    <menuitem name="Ubicaciones" id="soporte_ubicaciones" parent="soporte.menu_root" groups="soporte_admins"/>
+    <menuitem name="Técnicos" id="soporte_tecnicos" parent="soporte.menu_root" groups="soporte_admins"/>
+    
+
+    <!-- actions -->
+
+    <menuitem name="Mostrar lista" id="soporte_incidencias_list" parent="soporte_incidencias"
+              action="incidencia_action_window" groups="soporte_users"/>
+    <menuitem name="Mostrar lista" id="soporte_ubicaciones_list" parent="soporte_ubicaciones"
+              action="ubicacion_action_window" groups="soporte_admins"/>
+    <menuitem name="Mostrar lista" id="soporte_tecnicos_list" parent="soporte_tecnicos"
+              action="tecnico_action_window" groups="soporte_admins"/>
+
+  </data>
+</odoo>

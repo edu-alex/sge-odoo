@@ -1,0 +1,87 @@
+<odoo>
+    <data>
+<!-- Para añadir un formato de papel podemos seguir la declaración que se especifica en este foro
+
+  https://www.odoo.com/es_ES/forum/ayuda-1/how-do-you-add-a-new-report-paper-format-in-a-module-using-xml-92372
+-->
+      <record id="soporte_paperformat_id" model="report.paperformat">
+        <field name="name">Soporte PaperFormat</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">15</field>
+        <field name="margin_bottom">15</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">3</field>
+        <field name="dpi">90</field>
+      </record>
+
+      <record model="ir.actions.report" id="action_informe_incidencia">
+        <field name="name">Imprimir incidencias</field>
+        <field name="model">soporte.incidencia</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">soporte.report_incidencia</field>
+        <field name="report_file">soporte.report_incidencia</field>
+        <field name="binding_model_id" ref="model_soporte_incidencia" />
+
+        <field name="print_report_name">'Soporte - %s' % (object.titulo)</field>
+        <field name="paperformat_id" ref="soporte_paperformat_id"/>
+
+      </record>
+
+      <template id="soporte.report_incidencia">
+        <t t-call="web.basic_layout">
+          <!-- web.html_container -->
+          <div class="alert alert-primary" role="alert">
+            <h1> Listado de incidencias</h1>
+          </div>
+          <div class="page">
+              <table class="table table-striped">
+                <thead class="table-dark">
+                  <tr>
+                    <th>Titulo</th>
+                    <th>Descripción</th>
+                    <th>Fecha_modificación</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <t t-foreach="docs" t-as="incidencia">
+                      <tr>
+                          <!-- 
+                            <t t-if="incidencia.foto">
+                            <img t-att-src="image_data_uri(incidencia.foto)" style="max-height:100px" />
+                          </t>
+                          -->                          
+                          <td><span t-field="incidencia.titulo"/></td>
+                          <td><span t-field="incidencia.descripcion"/></td>
+                          <td><span t-field="incidencia.fecha_modificacion"/></td>
+                      </tr>
+                    
+                  </t>
+                </tbody>
+              </table>
+          </div>
+        </t>
+      </template>
+<!--
+        <template id="listing">
+          <ul>
+            <li t-foreach="objects" t-as="object">
+              <a t-attf-href="#{ root }/objects/#{ object.id }">
+                <t t-esc="object.display_name"/>
+              </a>
+            </li>
+          </ul>
+        </template>
+        <template id="object">
+          <h1><t t-esc="object.display_name"/></h1>
+          <dl>
+            <t t-foreach="object._fields" t-as="field">
+              <dt><t t-esc="field"/></dt>
+              <dd><t t-esc="object[field]"/></dd>
+            </t>
+          </dl>
+        </template>
+-->
+    </data>
+</odoo>
