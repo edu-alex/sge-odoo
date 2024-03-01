@@ -1,0 +1,122 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="alumno_list">
+      <field name="name">Lista de alumnos</field>
+      <field name="model">gymiax.alumno</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="nre"/>
+          <field name="nombre"/>
+          <field name="apellido1"/>
+          <field name="apellido2"/>
+        </tree>
+      </field>
+    </record>
+    <record model="ir.ui.view" id="alumno_form">
+      <field name="name">Alumno</field>
+      <field name="model">gymiax.alumno</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <div class="oe_title">
+              <h1>Alumno              </h1>
+            </div>
+            <div class="oe_title">
+              <label for="nre" class="oe_edit_only"/>
+              <h1>
+                  <field name="nre" placeholder="NRE" class="oe_inline" modifiers="{&quot;required&quot;: true}"/>
+              </h1>
+            </div>
+            
+            <separator string="Datos personales" colspan="4" />
+                
+            
+            <group col="3">
+                <group >
+                  <field name="apellido1"/>
+                </group>
+                <group >
+                  <field name="apellido2"/>
+                </group>
+                <group >
+                  <field name="nombre"/>
+                </group>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+    <record model="ir.ui.view" id="profesor_form">
+      <field name="name">Profesor</field>
+      <field name="model">gymiax.profesor</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <div class="oe_title">
+              <h1>Profesor              </h1>
+            </div>
+            <separator string="Datos personales" colspan="4" />
+
+            <group col="3">
+              <group >
+                <field name="apellido1"/>
+              </group>
+              <group >
+                <field name="apellido2"/>
+              </group>
+              <group >
+                <field name="nombre"/>
+              </group>
+          </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="profesor_list">
+      <field name="name">Lista de profesores</field>
+      <field name="model">gymiax.profesor</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="nombre"/>
+          <field name="apellido1"/>
+          <field name="apellido2"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="gymiax_alumno_aw">
+      <field name="name">GymIAX Alumnos</field>
+      <field name="res_model">gymiax.alumno</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    <record model="ir.actions.act_window" id="gymiax_profesor_aw">
+      <field name="name">GymIAX Profesores</field>
+      <field name="res_model">gymiax.profesor</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- Top menu item -->
+
+    <menuitem name="GymIAX" id="gymiax_menu_root"/>
+
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="gymiax.menu_1" parent="gymiax.menu_root"/>
+    <menuitem name="Menu 2" id="gymiax.menu_2" parent="gymiax.menu_root"/>
+-->
+    <!-- actions -->
+
+    <menuitem name="Alumnos" id="gymiax_menu_alumno" parent="gymiax_menu_root"
+              action="gymiax_alumno_aw"/>
+    <menuitem name="Profesores" id="gymiax_menu_profesor" parent="gymiax_menu_root"
+              action="gymiax_profesor_aw"/>
+
+
+  </data>
+</odoo>

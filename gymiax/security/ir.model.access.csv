@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_gymiax_alu_userid,acl_gymiax_alu_users,model_gymiax_alumno,gymiax.gymiax_users,1,0,0,0
+access_gymiax_pro_userid,acl_gymiax_pro_users,model_gymiax_profesor,gymiax.gymiax_users,1,0,0,0
+access_gymiax_alu_adminid,acl_gymiax_alu_admins,model_gymiax_alumno,gymiax.gymiax_admins,1,1,1,1
+access_gymiax_pro_adminid,acl_gymiax_pro_admins,model_gymiax_profesor,gymiax.gymiax_admins,1,1,1,1

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.module.category" id="gymiax_categoria">
+        <field name="name">GymIAX</field>
+        <field name="description">Gestión de gimnasio IAX</field>
+        <field name="sequence">100</field>
+    </record>
+
+    <record model="res.groups" id="gymiax_users">
+        <field name="name">GymIAX estándar</field>
+        <field name="category_id" ref="gymiax_categoria"/>
+        <field name="comment">Usuarios consulta del gimnasio</field>
+        <field name="users" eval="[(4,ref('base.group_user'))]" />
+    </record>
+
+    <record model="res.groups" id="gymiax_admins">
+        <field name="name">GymIAX administradores</field>
+        <field name="category_id" ref="gymiax_categoria"/>
+        <field name="comment">Usuarios administradores del gimnasio</field>
+        <field name="users" eval="[(4,ref('base.user_admin'))]" />  
+        <field name="implied_ids" eval="[(4,ref('gymiax_users'))]"  /> 
+    </record >
+
+</odoo>
